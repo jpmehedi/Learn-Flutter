@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,24 +21,25 @@ class AlertBox extends StatefulWidget {
 class _AlertBoxState extends State<AlertBox> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Alert "),
-      ),
-      body: Column(
-        children: <Widget>[
-          RaisedButton(
-              child: Text("Alert Button"),
-              onPressed: () {
-                _showDialog(context);
-              })
-        ],
+    return WillPopScope(
+      onWillPop: () {
+        return showExitPopUp(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Alert "),
+        ),
+        body: Column(
+          children: <Widget>[
+            RaisedButton(child: Text("Alert Button"), onPressed: () {})
+          ],
+        ),
       ),
     );
   }
 }
 
-_showDialog(context) {
+showExitPopUp(context) {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -49,20 +51,18 @@ _showDialog(context) {
           ),
         ),
         actions: <Widget>[
-          Expanded(
-            child: RaisedButton(
-              child: Text("Yes"),
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
           RaisedButton(
-            child: Text("No"),
+            child: Text("NO"),
             textColor: Colors.white,
             onPressed: () {
               Navigator.of(context).pop();
+            },
+          ),
+          RaisedButton(
+            child: Text("Yes"),
+            textColor: Colors.white,
+            onPressed: () {
+              SystemNavigator.pop();
             },
           )
         ],
